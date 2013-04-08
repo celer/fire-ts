@@ -1,0 +1,45 @@
+function template(i,o,oc){
+	o=o||{};
+	o.b=o.blocks||{};
+	var s="";
+	var e=(o.e||function(i){s+=i;});
+	var j=(o.j||JSON.stringify);
+  <% if(async){ %>
+		var d=<%# deps %>;
+		var ts={};
+		var r = function(t,i,o){
+			return s+=(ts[t+"-"+j(i)]);
+		}
+		var td = function(){
+			if(d.length>0){
+				var tn=d.shift();
+				console.log("Requesting ",tn);
+				o.f(tn,function(err,res){
+					console.log(tn,err,res);
+					if(err) {
+						return oc(err);
+					} else { 
+						eval("var k="+res);
+						k(i,o,function(err,res){
+							if(err) return oc(err);
+							ts[tn+"-"+j(i)]=res;
+							td();
+						});
+					}
+				});
+			} else {
+				console.log("Attempting to render template");
+				with(i){
+					<%=code%>	
+				}
+				return oc(null,s);
+			}
+		}
+		td();
+	<% } else { %>
+		with(i){
+			<%=code%>	
+		}
+		return s;
+	<% } %>
+}

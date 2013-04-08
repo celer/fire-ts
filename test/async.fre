@@ -1,0 +1,2 @@
+Hello <%=name%>
+<%-../test/async1.fre%>

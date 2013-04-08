@@ -1,0 +1,23 @@
+{
+  "name": "fire-ts",
+  "version": "0.0.1",
+  "description": "A template engine for generating code (c,c++,js,java,html,ruby,etc)",
+  "main": "index.js",
+  "bin": {
+    "fire-ts": "bin/fire-ts"
+  },
+  "keywords": [
+    "template",
+		"c",
+		"c++",
+		"java",
+		"html",
+		"ruby"
+  ],
+  "scripts": {
+    "test": "node test/test.js"
+  },
+  "dependencies": {
+    "pegjs": "~0.7.0"
+  }
+}

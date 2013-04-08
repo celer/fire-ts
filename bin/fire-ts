@@ -1,0 +1,57 @@
+#!/usr/bin/env node
+
+var fs = require('fs');
+var optimist=require('optimist');
+
+optimist=optimist
+	.demand("template")
+	.describe("output file to write (will reload blocks)")
+	.describe("template","The template to use")
+	.describe("input","The input to use to run the template (as JSON)")
+	.describe("blocks","The blocks to use (as a JSON hash)")
+	.describe("compare","Compare the output file to the specified file")
+
+var argv = optimist.argv;
+
+var Fire = require('../lib/fire');
+
+var opts={};
+var input={};
+
+if(argv.blocks){
+	opts.blocks=JSON.parse(argv.blocks);
+}
+
+if(argv.input){
+	input=JSON.parse(argv.input);
+}
+
+if(argv.output){
+	Fire.generateSync(argv.template,argv.output,input,opts);
+	
+	if(argv.compare){
+		var compareData = fs.readFileSync(argv.compare);
+		compareData=compareData.toString();
+		var outputData = fs.readFileSync(argv.output);
+		outputData=outputData.toString();
+		if(compareData!=outputData){
+			process.exit(-1);
+		}
+	}
+
+} else {
+	var res = Fire.parseSync(argv.template);
+	eval("var templ="+res);
+	outputData=templ(input,opts));
+	process.stdout.write(outputData);
+	if(argv.compare){
+		var compareData = fs.readFileSync(argv.compare);
+		compareData=compareData.toString();
+		if(compareData!=outputData){
+			process.exit(-1);
+		}
+	}
+}
+
+process.exit(0);
+

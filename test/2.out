@@ -1,0 +1,42 @@
+Start
+Not Escaped 0
+Escaped "\n0"
+JSON {"a":0,"b":89}
+Not Escaped 1
+Escaped "\n1"
+JSON {"a":1,"b":89}
+Not Escaped 2
+Escaped "\n2"
+JSON {"a":2,"b":89}
+Not Escaped 3
+Escaped "\n3"
+JSON {"a":3,"b":89}
+Bye
+Wolf
+	Kittens
+Not Escaped 4
+Escaped "\n4"
+JSON {"a":4,"b":89}
+Not Escaped 5
+Escaped "\n5"
+JSON {"a":5,"b":89}
+Not Escaped 6
+Escaped "\n6"
+JSON {"a":6,"b":89}
+Not Escaped 7
+Escaped "\n7"
+JSON {"a":7,"b":89}
+Not Escaped 8
+Escaped "\n8"
+JSON {"a":8,"b":89}
+Not Escaped 9
+Escaped "\n9"
+JSON {"a":9,"b":89}
+
+
+
+
+
+
+
+
