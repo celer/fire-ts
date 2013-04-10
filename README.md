@@ -72,7 +72,7 @@ And will generate this:
 
 //%{prefix}
 const char *prefix="<";
-}%
+//}%
 
 char *colors[]={
 	"red",
@@ -100,6 +100,108 @@ void main(){
 
 
 ```
+
+# Evaluating code
+
+Anything in: 
+
+```jsp
+<% CODE %> 
+```
+will be evaluated as javascript, and it can even be multi-line
+
+```jsp
+Let's do some looping
+<%
+	for(var i=0;i<3;i++){
+		if(i==2){
+%>
+			i is 2
+<%	
+		}
+	}
+%>
+```
+Which would even track the number of opening and closing braces to properly add and remove tab characters from the output - So your templates and your generated code will look good!
+
+```
+Let's do some looping
+i is 2
+```
+
+If you want to actually indent "i is 2" simply add more tabs to it. 
+
+# Expressions
+
+There are multiple types of expressions
+
+*Raw*
+
+
+This will just output the value of the variable or expression with no formating
+```jsp
+	<!-- Output the raw variable or expression -->
+	<%=variable%>
+```
+
+*JSON Encoded*
+
+This will output the JSON encoded variable or expression
+```jsp
+	<!-- Output a JSON encoded value - which works well for 'c' escaped strings  -->
+	<%#variable%>
+```
+
+*URL Encoded*
+
+This will output a URL escaped string
+```jsp
+	<!-- Output a URL encoded value  -->
+	<%%variable%>
+```
+
+# Including sub-templates
+
+If you want to nest templates you an do this:
+
+```jsp
+	<%- header.fts %>
+```
+
+All the inputs and options pasted to the top template will be passed to the nested templates. 
+
+# Blocks
+
+One of the more advanced features of Fire-TS is that it can preserve the contents of the file it is going to over-write. Let's say for example you want to have a SQL file:
+
+```sql
+<%
+	var colors=[ "red","blue","green"];
+	var numbers=[1,2,3,5];
+%>
+
+
+-- %{schema} 
+
+create table colors (
+	id bigint auto_increment,
+	color varchar(20) not null,
+	number bigint not null,
+);
+
+-- }%
+
+<% colors.map(function(color){ %>
+	<% numbers.map(function(number){ %>
+		insert into colors (name) values(<%#color%>,<%=number%>);
+	<% }); %>
+<% }); %>
+
+```
+
+Fire-TS will see if the file it is about to over-write exists, and look for blocks ( starting with '%{[A-Za-z0-9]+}' and ending with '}%' ) and read them from the old file, and then insert them into the newly written output. Allowing you to preserve certain parts of older files. In the example above it would let you safely modify the schema and have the insert's regenerated each time!
+
+
 
 
 
