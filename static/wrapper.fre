@@ -27,7 +27,6 @@ function template(<FTSP>i,<FTSP>o,<FTSP>oc){
 					}
 				});
 			} else {
-				console.log("Attempting to render template");
 				with(<FTSP>i){
 					<%=code%>	
 				}

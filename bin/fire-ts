@@ -26,8 +26,7 @@ var Fire = require('../lib/fire-ts');
 
 var opts={ 
 	render: function(template, input,opts){
-		var res = Fire.parseSync(template,opts);	
-		eval("var templ="+res);
+		var templ = Fire.parseSync(template,opts);	
 		return templ(input,opts);	
 	},
 	debug: argv.debug,
@@ -58,8 +57,7 @@ if(argv.output && argv.template){
 
 } else {
 	if(argv.template){
-		var res = Fire.parseSync(argv.template,{ debug: argv.debug, uglify:argv.uglify});
-		eval("var templ="+res);
+		var templ = Fire.parseSync(argv.template,{ debug: argv.debug, uglify:argv.uglify});
 		outputData=templ(input,opts);
 		if(argv.compare){
 			var compareData = fs.readFileSync(argv.compare);
@@ -71,7 +69,7 @@ if(argv.output && argv.template){
 			process.stdout.write(outputData);
 		}
 	} else if(argv.compile){
-		var res = Fire.parseSync(argv.compile,{ debug: argv.debug, uglify:argv.uglify});
+		var res = Fire.parseSync(argv.compile,{ source: true, debug: argv.debug, uglify:argv.uglify});
 		console.log(res);
 	}
 }
