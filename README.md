@@ -1,7 +1,7 @@
 Fire TS
 =======
 
-## Introduction
+# Introduction
 
 Fire TS is a template engine for generating code. 
 
@@ -12,9 +12,9 @@ Fire TS is a template engine for generating code.
 
 If you want to generate HTML templates you should consider other template engines
 
-## Guide
+## The basics
 
-The syntax for Fire TS looks alot like JSP:
+The syntax for Fire TS looks alot like JSP, except the base language is JavaScript
 
 ```c
 <%
@@ -26,12 +26,15 @@ The syntax for Fire TS looks alot like JSP:
 
 /*%{header}
 	
- 	This is an example C program showing how Fire TS can be used to template C code
+	The text in this 'header' block can be overriden by what is found in the file that wil be overwritten when this file is generated. Allowing the user to edit this bit of comment or code safely without having to worry about loosing his/her changes.
 
 }%*/
 
 //%{prefix}  
+
+//This code will be preserved, even when the template is re-generated!!!
 const char *prefix=">";
+
 //}%
 
 char *colors[]={
@@ -100,8 +103,9 @@ void main(){
 
 
 ```
+# Writing templates!
 
-# Evaluating code
+## Evaluating code
 
 Anything in: 
 
@@ -131,11 +135,11 @@ i is 2
 
 If you want to actually indent "i is 2" simply add more tabs to it. 
 
-# Expressions
+## Expressions
 
 There are multiple types of expressions
 
-*Raw*
+**Raw**
 
 
 This will just output the value of the variable or expression with no formating
@@ -144,7 +148,7 @@ This will just output the value of the variable or expression with no formating
 	<%=variable%>
 ```
 
-*JSON Encoded*
+**JSON Encoded**
 
 This will output the JSON encoded variable or expression
 ```jsp
@@ -152,7 +156,7 @@ This will output the JSON encoded variable or expression
 	<%#variable%>
 ```
 
-*URL Encoded*
+**URL Encoded**
 
 This will output a URL escaped string
 ```jsp
@@ -160,7 +164,7 @@ This will output a URL escaped string
 	<%%variable%>
 ```
 
-# Including sub-templates
+## Including sub-templates
 
 If you want to nest templates you an do this:
 
@@ -170,7 +174,7 @@ If you want to nest templates you an do this:
 
 All the inputs and options pasted to the top template will be passed to the nested templates. 
 
-# Blocks
+## Blocks
 
 One of the more advanced features of Fire-TS is that it can preserve the contents of the file it is going to over-write. Let's say for example you want to have a SQL file:
 
@@ -202,7 +206,68 @@ create table colors (
 Fire-TS will see if the file it is about to over-write exists, and look for blocks ( starting with '%{[A-Za-z0-9]+}' and ending with '}%' ) and read them from the old file, and then insert them into the newly written output. Allowing you to preserve certain parts of older files. In the example above it would let you safely modify the schema and have the insert's regenerated each time!
 
 
+# Embedding
 
+Take a look at bin/fire-ts to get an idea how to use the templating engine, you can install it globally using
 
+```shell
+	npm install fire-ts -g
+```
 
- 
+Here is the API in a nutshell:
+
+```javascript
+
+/**
+	Compiles a template into a function or code
+	
+	@param {String} template - A string containing a template
+	@param {Object} options
+		@param {Boolean} async - generate an asynchronously nested template
+		@param {Boolean} source - don't return a function, return code instead
+		@param {Boolean} uglify - use uglify on the code
+		@param {Object} blocks - a hash of blocks to use
+
+	@returns a template function or a string chunk of javascript code
+*/
+Fire.compile(template,options);
+
+/**
+	Read the blocks from string of code, for use with generating code
+	
+	@returns {Object} as hash of blocks
+*/
+Fire.readBlocks(template)
+Fire.readFileBlocks(template,onComplete)
+Fire.readFileBlocksSync(template)
+
+/**
+	Generate an output file given a template and an output file
+
+	This will read the blocks from the output file and re-use them if they exist
+
+	@param {String} template - A string containing a template
+	@param {Object} options
+		@param {Boolean} async - generate an asynchronously nested template
+		@param {Boolean} source - don't return a function, return code instead
+		@param {Boolean} uglify - use uglify on the code
+		@param {Object} blocks - a hash of blocks to use (these will override those provided)
+	
+*/
+Fire.generateSync(template,options)
+
+/**
+	Generate an output file given a template
+
+	@param {String} template - A string containing a template
+	@param {Object} options
+		@param {Boolean} async - generate an asynchronously nested template
+		@param {Boolean} source - don't return a function, return code instead
+		@param {Boolean} uglify - use uglify on the code
+		@param {Object} blocks - a hash of blocks to use (these will override those provided)
+*/
+Fire.parseSync(template,options)
+Fire.parse(template,options,onComplete)
+
+```
+
