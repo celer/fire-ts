@@ -1,0 +1,2 @@
+Hello <%=name%>
+<%-../test/nested_child.fts%>

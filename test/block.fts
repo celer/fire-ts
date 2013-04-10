@@ -1,9 +1,9 @@
 <!--%{Header}
-	This is a new block
+	This is a block
 }%-->
 
 //%{header}
-	BAR
+	Wolf
 //}%
 
-Hello 44
+Hello <%=pid%>

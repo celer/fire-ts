@@ -1,0 +1,22 @@
+<%
+	var colors=[ "red","blue","green"];
+	var numbers=[1,2,3,5];
+%>
+
+
+-- %{schema} 
+
+create table colors (
+	id bigint auto_increment,
+	color varchar(20) not null,
+	number bigint not null,
+);
+
+-- }%
+
+<% colors.map(function(color){ %>
+	<% numbers.map(function(number){ %>
+		insert into colors (name) values(<%#color%>,<%=number%>);
+	<% }); %>
+<% }); %>
+

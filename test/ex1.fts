@@ -1,0 +1,11 @@
+char *models[]={
+<% 
+	var models=["Gold","Silver","Bronze","Rusty"];
+	for(var i in models) {
+		var model = models[i];
+%>
+		<%#model%>,
+<%	}%>
+	NULL
+};
+

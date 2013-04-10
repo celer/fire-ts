@@ -1,0 +1,9 @@
+<!--%{block1}
+	This is a block (MODIFIED)
+}%-->
+
+//%{block2}
+	Wolf (MODIFIED)
+//}%
+
+Hello 44

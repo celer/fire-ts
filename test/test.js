@@ -5,8 +5,7 @@ var Fire=require('../lib/fire-ts');
 
 var opts={ 
 	render: function(template, input,opts){
-		var res = Fire.parseSync(template,opts);	
-		eval("var templ="+res);
+		var templ= Fire.parseSync(template,opts);	
 		return templ(input,opts);	
 	}
 }

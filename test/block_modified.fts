@@ -1,0 +1,9 @@
+<!--%{block1}
+	This is a block
+}%-->
+
+//%{block2}
+	Wolf
+//}%
+
+Hello <%=pid%>
