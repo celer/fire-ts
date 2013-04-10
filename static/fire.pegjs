@@ -1,7 +1,6 @@
 start
 	= expr:expr* { return expr; }
-	 
-	
+
 chars
 	= "\n"
 	/ "\r\n"
@@ -34,6 +33,7 @@ block
 lineComment
  	= '//'
 	/ '#'
+	/ '--'
 
 startComment
 	= '<!--'
@@ -64,12 +64,15 @@ expr
 																																						code=code.join("");
 																																						return { string:code, block: block, ec:ec, sc:sc, line:line };
 																																					}
-	/ sp* '<%' e:(texpr?) code:code+ '%>' anl:nl? { 
+	/ fsp:sp*'<%' e:(texpr?) code:code+ '%>' anl:nl? { 
+																			if(fsp instanceof Array){
+																				fsp=fsp.join('');
+																			}
 																			code=code.join(""); 
 																			if(e instanceof Array){
 																				e=e.join('');
 																			}
-																			return { code: code, e:e, anl:anl, line: line, column: column }; 
+																			return { code: code, e:e, anl:anl, fsp: fsp, line: line, column: column }; 
 																	}
 	/ string:string+  {
 												string=string.join(""); 

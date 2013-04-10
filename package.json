@@ -8,16 +8,19 @@
   },
   "keywords": [
     "template",
-		"c",
-		"c++",
-		"java",
-		"html",
-		"ruby"
+    "c",
+    "c++",
+    "java",
+    "html",
+    "ruby"
   ],
   "scripts": {
-    "test": "node test/test.js"
+    "test": "(cd test && node test.js)"
   },
   "dependencies": {
-    "pegjs": "~0.7.0"
+    "pegjs": "~0.7.0",
+    "optimist": "~0.3.7",
+    "uglify-js": "~2.2.5",
+    "async": "~0.2.6"
   }
 }

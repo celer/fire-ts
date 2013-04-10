@@ -1,0 +1,91 @@
+# No tabs
+Hello
+red
+Color red
+1
+Number 1
+Number 1
+Number & Color red 1
+2
+Number 2
+Number 2
+Number & Color red 2
+3
+Number 3
+Number 3
+Number & Color red 3
+green
+Color green
+1
+Number 1
+Number 1
+Number & Color green 1
+2
+Number 2
+Number 2
+Number & Color green 2
+3
+Number 3
+Number 3
+Number & Color green 3
+blue
+Color blue
+1
+Number 1
+Number 1
+Number & Color blue 1
+2
+Number 2
+Number 2
+Number & Color blue 2
+3
+Number 3
+Number 3
+Number & Color blue 3
+
+
+
+# One tabs
+Hello
+	red
+	Color red
+	1
+	Number 1
+	Number 1
+	Number & Color red 1
+	2
+	Number 2
+	Number 2
+	Number & Color red 2
+	3
+	Number 3
+	Number 3
+	Number & Color red 3
+	green
+	Color green
+	1
+	Number 1
+	Number 1
+	Number & Color green 1
+	2
+	Number 2
+	Number 2
+	Number & Color green 2
+	3
+	Number 3
+	Number 3
+	Number & Color green 3
+	blue
+	Color blue
+	1
+	Number 1
+	Number 1
+	Number & Color blue 1
+	2
+	Number 2
+	Number 2
+	Number & Color blue 2
+	3
+	Number 3
+	Number 3
+	Number & Color blue 3

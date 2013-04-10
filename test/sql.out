@@ -1,0 +1,25 @@
+
+
+-- %{schema} 
+
+create table colors (
+	id bigint auto_increment,
+	color varchar(20) not null,
+	number bigint not null,
+);
+
+-- }%
+
+insert into colors (name) values("red",1);
+insert into colors (name) values("red",2);
+insert into colors (name) values("red",3);
+insert into colors (name) values("red",5);
+insert into colors (name) values("blue",1);
+insert into colors (name) values("blue",2);
+insert into colors (name) values("blue",3);
+insert into colors (name) values("blue",5);
+insert into colors (name) values("green",1);
+insert into colors (name) values("green",2);
+insert into colors (name) values("green",3);
+insert into colors (name) values("green",5);
+

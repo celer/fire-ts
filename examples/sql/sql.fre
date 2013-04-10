@@ -1,0 +1,25 @@
+<%
+	var colors=[ "red","blue","green"];
+	var numbers=[1,2,3,5];
+%>
+
+
+-- %{schema} 
+
+-- By using a defined block we can make changes in this block and fire-ts won't over write them, instead it will
+-- read this 'header' section from the target file and re-use it
+
+create table colors (
+	id bigint auto_increment,
+	color varchar(20) not null,
+	number bigint not null,
+);
+
+-- }%
+
+<% colors.map(function(color){ %>
+	<% numbers.map(function(number){ %>
+		insert into colors (name) values(<%#color%>,<%=number%>);
+	<% }); %>
+<% }); %>
+

@@ -4,18 +4,35 @@ var fs = require('fs');
 var optimist=require('optimist');
 
 optimist=optimist
-	.demand("template")
-	.describe("output file to write (will reload blocks)")
+	.describe("output","File to write (will reload blocks)")
 	.describe("template","The template to use")
+	.describe("compile","The template to compile")
 	.describe("input","The input to use to run the template (as JSON)")
 	.describe("blocks","The blocks to use (as a JSON hash)")
 	.describe("compare","Compare the output file to the specified file")
+	.describe("uglify","Uglify the compiled template")
+	.describe("debug","Debug")
+
 
 var argv = optimist.argv;
 
-var Fire = require('../lib/fire');
+if(!argv.template && !argv.compile){
+	optimist.showHelp();
+	process.exit(-2);
+}
 
-var opts={};
+
+var Fire = require('../lib/fire-ts');
+
+var opts={ 
+	render: function(template, input,opts){
+		var res = Fire.parseSync(template,opts);	
+		eval("var templ="+res);
+		return templ(input,opts);	
+	},
+	debug: argv.debug,
+	uglify: argv.uglify,
+};
 var input={};
 
 if(argv.blocks){
@@ -26,7 +43,7 @@ if(argv.input){
 	input=JSON.parse(argv.input);
 }
 
-if(argv.output){
+if(argv.output && argv.template){
 	Fire.generateSync(argv.template,argv.output,input,opts);
 	
 	if(argv.compare){
@@ -40,16 +57,22 @@ if(argv.output){
 	}
 
 } else {
-	var res = Fire.parseSync(argv.template);
-	eval("var templ="+res);
-	outputData=templ(input,opts));
-	process.stdout.write(outputData);
-	if(argv.compare){
-		var compareData = fs.readFileSync(argv.compare);
-		compareData=compareData.toString();
-		if(compareData!=outputData){
-			process.exit(-1);
+	if(argv.template){
+		var res = Fire.parseSync(argv.template,{ debug: argv.debug, uglify:argv.uglify});
+		eval("var templ="+res);
+		outputData=templ(input,opts);
+		if(argv.compare){
+			var compareData = fs.readFileSync(argv.compare);
+			compareData=compareData.toString();
+			if(compareData!=outputData){
+				process.exit(-1);
+			}
+		} else {
+			process.stdout.write(outputData);
 		}
+	} else if(argv.compile){
+		var res = Fire.parseSync(argv.compile,{ debug: argv.debug, uglify:argv.uglify});
+		console.log(res);
 	}
 }
 

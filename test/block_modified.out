@@ -1,0 +1,9 @@
+<!--%{Header}
+	This is a block
+}%-->
+
+//%{header}
+BARBAR
+//}%
+
+Hello 44

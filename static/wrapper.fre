@@ -1,27 +1,26 @@
-function template(i,o,oc){
-	o=o||{};
-	o.b=o.blocks||{};
-	var s="";
-	var e=(o.e||function(i){s+=i;});
-	var j=(o.j||JSON.stringify);
+function template(<FTSP>i,<FTSP>o,<FTSP>oc){
+	<FTSP>o=<FTSP>o||{};
+	<FTSP>o.b=<FTSP>o.blocks||{};
+	var <FTSP>s="";
+	var <FTSP>e=(<FTSP>o.e||function(i){<FTSP>s+=i;});
+	var <FTSP>j=(<FTSP>o.j||JSON.stringify);
+	var <FTSP>r=<FTSP>o.render;
   <% if(async){ %>
 		var d=<%# deps %>;
 		var ts={};
-		var r = function(t,i,o){
-			return s+=(ts[t+"-"+j(i)]);
+		var <FTSP>r = function(t,i,o){
+			return <FTSP>s+=(ts[t+"-"+j(i)]);
 		}
 		var td = function(){
 			if(d.length>0){
 				var tn=d.shift();
-				console.log("Requesting ",tn);
 				o.f(tn,function(err,res){
-					console.log(tn,err,res);
 					if(err) {
-						return oc(err);
+						return <FTSP>oc(err);
 					} else { 
 						eval("var k="+res);
 						k(i,o,function(err,res){
-							if(err) return oc(err);
+							if(err) return <FTSP>oc(err);
 							ts[tn+"-"+j(i)]=res;
 							td();
 						});
@@ -29,17 +28,17 @@ function template(i,o,oc){
 				});
 			} else {
 				console.log("Attempting to render template");
-				with(i){
+				with(<FTSP>i){
 					<%=code%>	
 				}
-				return oc(null,s);
+				return <FTSP>oc(null,s);
 			}
 		}
 		td();
 	<% } else { %>
-		with(i){
+		with(<FTSP>i){
 			<%=code%>	
 		}
-		return s;
+		return <FTSP>s;
 	<% } %>
 }

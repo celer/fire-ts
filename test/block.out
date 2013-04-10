@@ -3,7 +3,7 @@
 }%-->
 
 //%{header}
-	Wolf
+FOOFOO
 //}%
 
-Hello <%=pid%>
+Hello 33
