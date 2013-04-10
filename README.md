@@ -1,6 +1,8 @@
 Fire TS
 =======
 
+Build Status: [![Build Status](https://travis-ci.org/celer/fire-ts.png)](https://travis-ci.org/celer/fire-ts)
+
 # Introduction
 
 Fire TS is a template engine for generating code. 
