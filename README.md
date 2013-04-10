@@ -8,15 +8,15 @@ Build Status: [![Build Status](https://travis-ci.org/celer/fire-ts.png)](https:/
 Fire TS is a template engine for generating code. 
 
  * Designed to generate C, C++, Java, JavaScript, Ruby, Perl, HTML
- * Tries to generate well formated code
+ * Tries to generate well formatted code
  * Can update existing generated files with out overwriting everything
- * Designed to be compatible with the cumbustion template system  
+ * Designed to be compatible with the combustion template system  
 
 If you want to generate HTML templates you should consider other template engines
 
 ## The basics
 
-The syntax for Fire TS looks alot like JSP, except the base language is JavaScript
+The syntax for Fire TS looks a lot like JSP, except the base language is JavaScript
 
 ```c
 <%
@@ -28,7 +28,7 @@ The syntax for Fire TS looks alot like JSP, except the base language is JavaScri
 
 /*%{header}
 	
-	The text in this 'header' block can be overriden by what is found in the file that wil be overwritten when this file is generated. Allowing the user to edit this bit of comment or code safely without having to worry about loosing his/her changes.
+	The text in this 'header' block can be overridden by what is found in the file that wil be overwritten when this file is generated. Allowing the user to edit this bit of comment or code safely without having to worry about loosing his/her changes.
 
 }%*/
 
@@ -114,7 +114,7 @@ Anything in:
 ```jsp
 <% CODE %> 
 ```
-will be evaluated as javascript, and it can even be multi-line
+will be evaluated as JavaScript, and it can even be multi-line
 
 ```jsp
 Let's do some looping
@@ -144,7 +144,7 @@ There are multiple types of expressions
 **Raw**
 
 
-This will just output the value of the variable or expression with no formating
+This will just output the value of the variable or expression with no formatting
 ```jsp
 	<!-- Output the raw variable or expression -->
 	<%=variable%>
@@ -166,6 +166,23 @@ This will output a URL escaped string
 	<%%variable%>
 ```
 
+## Capturing and modifying the template
+
+```jsp
+
+//Will replace Their with There
+<%(%>Hello Their <%=name%><%).replace(/Their/,"There")%> 
+
+//Will convert this to lower case 
+<%(%>MiXeDcAsE<%).toLowerCase()%>
+
+
+``` 
+
+Using '<%(%>' and '<%)%>' allows you to capture and modify result of that part of the template as a string and modify it. Here are a few examples:
+
+
+
 ## Including sub-templates
 
 If you want to nest templates you an do this:
@@ -174,7 +191,13 @@ If you want to nest templates you an do this:
 	<%- header.fts %>
 ```
 
-All the inputs and options pasted to the top template will be passed to the nested templates. 
+All the inputs and options pasted to the top template will be passed to the nested templates. If you need to capture variables from one template to the nested templates:
+
+```jsp
+	<%- header.fts (variableA,variableB) %>
+```
+
+will capture local variableA and variableB and pass them into the nested template
 
 ## Blocks
 
@@ -205,7 +228,7 @@ create table colors (
 
 ```
 
-Fire-TS will see if the file it is about to over-write exists, and look for blocks ( starting with '%{[A-Za-z0-9]+}' and ending with '}%' ) and read them from the old file, and then insert them into the newly written output. Allowing you to preserve certain parts of older files. In the example above it would let you safely modify the schema and have the insert's regenerated each time!
+Fire-TS will see if the file it is about to over-write exists, and look for blocks ( starting with '%{[A-Za-z0-9]+}' and ending with '}%' ) and read them from the old file, and then insert them into the newly written output. Allowing you to preserve certain parts of older files. In the example above it would let you safely modify the schema and have the inserts regenerated each time!
 
 
 # Embedding

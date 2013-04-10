@@ -68,8 +68,11 @@ if(argv.output && argv.template){
 		} else {
 			process.stdout.write(outputData);
 		}
-	} else if(argv.compile){
-		var res = Fire.parseSync(argv.compile,{ source: true, debug: argv.debug, uglify:argv.uglify});
+	} else if(argv.compile){	
+		var uglify=false;
+		if(argv.uglify)
+			uglify=true;
+		var res = Fire.parseSync(argv.compile,{ source: true, debug: argv.debug, uglify:uglify});
 		console.log(res);
 	}
 }

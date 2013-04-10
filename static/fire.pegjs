@@ -50,6 +50,24 @@ texpr
 	/ '-'	
 	/ '#'
 
+	
+jse
+	= spc '(' spc '%>' { 
+											return { e:'(', line:line, code:"F"}; 
+										}
+	/ spc ')' '.'? code:code+ '%>' { 
+															code=code.join('');
+															return { code: code, e: ')', line: line };
+														}
+
+	/ e:(texpr?) code:code+ '%>' anl:nl? {
+																		code=code.join(''); 
+																		if(e instanceof Array){
+																			e=e.join('');
+																		}
+																		return { code: code, e:e, anl:anl, line: line, column: column }; 
+																}
+
 expr
 	= sc:(lineComment spc) '%{' block:([A-Za-z0-9]+) '}' code:block+ '}%'{
 																																						sc=sc.join("");
@@ -64,15 +82,12 @@ expr
 																																						code=code.join("");
 																																						return { string:code, block: block, ec:ec, sc:sc, line:line };
 																																					}
-	/ fsp:sp*'<%' e:(texpr?) code:code+ '%>' anl:nl? { 
+	/ fsp:sp*'<%' jse:jse { 
 																			if(fsp instanceof Array){
 																				fsp=fsp.join('');
 																			}
-																			code=code.join(""); 
-																			if(e instanceof Array){
-																				e=e.join('');
-																			}
-																			return { code: code, e:e, anl:anl, fsp: fsp, line: line, column: column }; 
+																			jse.fsp=fsp;
+																			return jse; 
 																	}
 	/ string:string+  {
 												string=string.join(""); 

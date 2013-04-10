@@ -9,19 +9,18 @@ function template(<FTSP>i,<FTSP>o,<FTSP>oc){
 		var d=<%# deps %>;
 		var ts={};
 		var <FTSP>r = function(t,i,o){
-			return <FTSP>s+=(ts[t+"-"+j(i)]);
+			return <FTSP>s+=(ts[t]);
 		}
 		var td = function(){
 			if(d.length>0){
 				var tn=d.shift();
-				o.f(tn,function(err,res){
+				<FTSP>o.fetch(tn,function(err,res){
 					if(err) {
 						return <FTSP>oc(err);
 					} else { 
-						eval("var k="+res);
-						k(i,o,function(err,res){
+						res(<FTSP>i,<FTSP>o,function(err,res){
 							if(err) return <FTSP>oc(err);
-							ts[tn+"-"+j(i)]=res;
+							ts[tn]=res;
 							td();
 						});
 					}
@@ -30,7 +29,7 @@ function template(<FTSP>i,<FTSP>o,<FTSP>oc){
 				with(<FTSP>i){
 					<%=code%>	
 				}
-				return <FTSP>oc(null,s);
+				return <FTSP>oc(null,<FTSP>s);
 			}
 		}
 		td();

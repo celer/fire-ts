@@ -14,6 +14,6 @@ else
 endif
 unlet b:current_syntax
 
-source fts_common.vim
+runtime syntax/fts_common.vim
 
 let b:current_syntax = "ftsc"

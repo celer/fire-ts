@@ -7,6 +7,6 @@ if exists("b:current_syntax")
 	finish
 endif
 
-source fts_common.vim
+runtime syntax/fts_common.vim
 
 let b:current_syntax = "fts"
