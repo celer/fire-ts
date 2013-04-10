@@ -271,3 +271,41 @@ Fire.parse(template,options,onComplete)
 
 ```
 
+You can see embedding examples here: https://github.com/celer/fire-ts/tree/master/examples/embed
+
+# Command line
+
+```shell
+./fire-ts
+Options:
+  --output    File to write (will reload blocks)            
+  --template  The template to use                           
+  --compile   The template to compile                       
+  --input     The input to use to run the template (as JSON)
+  --blocks    The blocks to use (as a JSON hash)            
+  --compare   Compare the output file to the specified file 
+  --uglify    Uglify the compiled template                  
+  --debug     Debug   
+```
+
+Let's run a template
+
+```shell
+./bin/fire-ts --template test/1.fts
+```
+
+Let's compile a template
+
+```shell
+./bin/fire-ts --compile test/1.fts
+```
+Results in 
+
+```javascript
+function template(_$_i,_$_o,_$_oc){_$_o=_$_o||{},_$_o.b=_$_o.blocks||{};var _$_s="",_$_e=_$_o.e||function(_){_$_s+=_};with(_$_o.j||JSON.stringify,_$_o.render,_$_i)_$_e("Hello\n  1\n  2 \n  3\n  4\n  5\n6\n   6\n 7 8\n   A\n     B\n");return _$_s}
+```
+
+
+
+
+
