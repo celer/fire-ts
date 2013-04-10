@@ -1,9 +1,9 @@
-<!--%{Header}
-	This is a block
+<!--%{block1}
+	This is a block (MODIFIED)
 }%-->
 
-//%{header}
-BARBAR
+//%{block2}
+	Wolf (MODIFIED)
 //}%
 
 Hello 44

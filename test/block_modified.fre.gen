@@ -1,9 +1,9 @@
 <!--%{Header}
-	This is a block
+	This is a new block
 }%-->
 
 //%{header}
-BARBAR
+	BAR
 //}%
 
 Hello 44
