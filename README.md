@@ -330,7 +330,9 @@ Results in
 function template(_$_i,_$_o,_$_oc){_$_o=_$_o||{},_$_o.b=_$_o.blocks||{};var _$_s="",_$_e=_$_o.e||function(_){_$_s+=_};with(_$_o.j||JSON.stringify,_$_o.render,_$_i)_$_e("Hello\n  1\n  2 \n  3\n  4\n  5\n6\n   6\n 7 8\n   A\n     B\n");return _$_s}
 ```
 
+## License
 
+Fire-TS is licensed under the MIT License
 
 
 
