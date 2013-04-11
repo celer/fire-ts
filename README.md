@@ -166,7 +166,7 @@ This will output a URL escaped string
 	<%%variable%>
 ```
 
-## Capturing and modifying the template
+## Capturing and modifying the template itself
 
 ```jsp
 
@@ -179,7 +179,7 @@ This will output a URL escaped string
 
 ``` 
 
-Using '<%(%>' and '<%)%>' allows you to capture and modify result of that part of the template as a string and modify it. Here are a few examples:
+Using '<%(%>' and '<%)%>' allows you to capture and modify result of that part of the template as a String and modify it. Here are a few examples:
 
 
 
@@ -188,16 +188,16 @@ Using '<%(%>' and '<%)%>' allows you to capture and modify result of that part o
 If you want to nest templates you an do this:
 
 ```jsp
-	<%- header.fts %>
+	<%@ header.fts %>
 ```
 
 All the inputs and options pasted to the top template will be passed to the nested templates. If you need to capture variables from one template to the nested templates:
 
 ```jsp
-	<%- header.fts (variableA,variableB) %>
+	<%@ header.fts (variableA,variableB) %>
 ```
 
-will capture local variableA and variableB and pass them into the nested template
+will capture local variableA and variableB and pass them into the nested template. Fire-TS will call opts.render to resolve the template, so you can back it with something that returns a file or a named snippet
 
 ## Blocks
 
@@ -239,63 +239,6 @@ Take a look at bin/fire-ts to get an idea how to use the templating engine, you 
 	npm install fire-ts -g
 ```
 
-Here is the API in a nutshell:
-
-```javascript
-
-/**
-	Compiles a template into a function or code
-	
-	@param {String} template - A string containing a template
-	@param {Object} options
-		@param {Boolean} async - generate an asynchronously nested template
-		@param {Boolean} source - don't return a function, return code instead
-		@param {Boolean} uglify - use uglify on the code
-		@param {Object} blocks - a hash of blocks to use
-
-	@returns a template function or a string chunk of javascript code
-*/
-Fire.compile(template,options);
-
-/**
-	Read the blocks from string of code, for use with generating code
-	
-	@returns {Object} as hash of blocks
-*/
-Fire.readBlocks(template)
-Fire.readFileBlocks(template,onComplete)
-Fire.readFileBlocksSync(template)
-
-/**
-	Generate an output file given a template and an output file
-
-	This will read the blocks from the output file and re-use them if they exist
-
-	@param {String} template - A string containing a template
-	@param {Object} options
-		@param {Boolean} async - generate an asynchronously nested template
-		@param {Boolean} source - don't return a function, return code instead
-		@param {Boolean} uglify - use uglify on the code
-		@param {Object} blocks - a hash of blocks to use (these will override those provided)
-	
-*/
-Fire.generateSync(template,options)
-
-/**
-	Generate an output file given a template
-
-	@param {String} template - A string containing a template
-	@param {Object} options
-		@param {Boolean} async - generate an asynchronously nested template
-		@param {Boolean} source - don't return a function, return code instead
-		@param {Boolean} uglify - use uglify on the code
-		@param {Object} blocks - a hash of blocks to use (these will override those provided)
-*/
-Fire.parseSync(template,options)
-Fire.parse(template,options,onComplete)
-
-```
-
 You can see embedding examples here: https://github.com/celer/fire-ts/tree/master/examples/embed
 
 # Command line
@@ -332,7 +275,216 @@ function template(_$_i,_$_o,_$_oc){_$_o=_$_o||{},_$_o.b=_$_o.blocks||{};var _$_s
 
 ## License
 
-Fire-TS is licensed under the MIT License
+# API
 
 
+```js
+/**
 
+	Fire Template System
+
+	@module FireTS
+	@class Fire
+
+
+*/
+
+
+/**
+
+	Read blocks from a given string
+
+	Blocks are primarly used as a way to keep modifications from various files. So typically FireTS will read the blocks from the file that is
+	about to be overwritten and make sure they aren't modified when the template is rewritten.
+
+	@param {String} input template or generated file containing one or more named blocks
+	@returns {Object} hash of blocks
+
+	Example of a block
+	
+	@example
+		//%{header}
+			This is a block
+		//}%
+
+	Reading the above example would return:
+
+	@example
+		{ header:"\n  This is a block\n//"}
+	
+	@method Fire.readBlocks
+
+*/
+
+
+/**
+
+	Read blocks from a file asynchronously
+
+	@param {String} file The file to read blocks from
+	@param {Function} onComplete
+		@param {String} onComplete.err The error string
+		@param {Object} onComplete.blocks The hash of blocks from file
+
+	@method Fire.readFileBlocks
+	@see Fire.readBlocks
+
+*/
+
+
+/**
+
+	Read blocks from a file synchronously
+
+	@param {String} file The file to read blocks from
+	@return {Object} The hash of blocks from file
+
+	@method Fire.readFileBlocksSync
+	@see Fire.readBlocks
+
+*/
+
+
+/**
+
+	Compile a string into a template
+
+	@param {String} input The template to compile
+	@param {Object} opts
+		@param {Boolean} opts.source Return the source for the template, not the compiled function
+		@param {Boolean} opts.uglify Uglify the source (true by default)
+		@param {Boolean} opts.async Generate a template which can load files/snippets asynchronously
+	@returns {Function or String} String or compiled template 
+
+	@method Fire.compile
+
+*/
+
+
+/**
+
+	Synchronous template function
+
+	@param {Object} input Input for the template
+	@param {Object} opts Options for the template
+		@param {Object} opts.blocks The blocks to insert into the file
+		@param {Function} opts.render The function to call to render the template (When run synchronously)
+			@param {String} opts.render.template The name of the template or snippet to render
+			@param {String} opts.render.input The inputs to use for the template
+			@param {String} opts.render.opts The options for the template
+
+	@returns {String} The result of running the template
+	
+	@example
+		var result = template({ name:"George" },{ 
+			render: function(template,input,opts){
+				return Fire.compile("<%=xi%>")(input)	
+			}	
+		});
+
+	@method template (synchronous)
+
+*/
+
+
+/**
+
+	Asynchronous template function
+
+	@param {Object} input Input for the template
+	@param {Object} opts Options for the template
+		@param {Object} opts.blocks The blocks to insert into the file
+		@param {Function} opts.fetch The function to call to fetch a snippet or template asynchrounsly
+			@param {String} opts.fetch.template The name of the template or snippet to render
+			@param {Function} opts.fetch.onComplete	The lambda to call when the snippet/template has been loaded
+			@param {String} opts.fetch.onComplete.err The returned as a result of loading the template
+			@param {Function} opts.fetch.onComplete.template The template function
+	@param {Function} onComplete The callback for when the template has been rendered
+			@param {String} opts.onComplete.err The returned as a result of loading the template
+			@param {String} opts.onComplete.result The result of running the template
+			
+	@example
+		template({name:"hello"},{ 
+			fetch: function(template,onComplete){
+				Fire.parse(template,{async:true},onComplete);
+			}
+		},function(err,template){
+			console.log("Result",template);
+		});
+
+	@method template (asynchronous)
+
+*/
+
+
+/**
+
+	Simulate the combustion template interface
+
+	The returned functions has the following parameters
+
+	@param {Object} input The input template
+	@param {Object} opts The options for the template 
+	
+	@returns {Function} Function to use for compiling templates
+
+	@example
+		var template = Fire.combustion().compile("<%=x%>");
+		template({x:5});
+
+	@method Fire.combustion	
+
+*/
+
+
+/**
+
+	Generate a file from a template
+
+	This function will:
+	
+	* Read the blocks from outFile if it exists
+	* Generate a new output file, reusing the blocks from the prior outFile
+
+	@param {String} template the template file
+	@param {String} outFile the output file
+	@param {Object} input the inputs to the template
+	@param {Object} options options for the template (see template)
+	
+	@returns {String} The result of running the template
+	
+	@method Fire.generateSync
+
+*/
+
+
+/**
+
+	Parse a template file synchronously and return a compiled template
+
+	@param {String} file the template file
+	@param {Object} opts the options for the compiler
+
+	@return {Function} The compiled template
+	
+	@method Fire.parseSync
+
+*/
+
+
+/**
+
+	Parse a template file and return a compiled template
+
+	@param {String} file the template file
+	@param {Object} opts the options for the compiler
+	@param {Function} onComplete The lambda to be called upon completion
+		@param {String} onComplete.err The error	
+		@param {Function} onComplete.template  compiled template
+	
+	@method Fire.parse
+
+*/
+
+
+```

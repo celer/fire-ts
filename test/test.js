@@ -12,25 +12,24 @@ var opts={
 	}
 }
 
+var tests=[
+	{ template:"1.fts", input:{}, out:"1.out"},
+	{ template:"2.fts", input:{}, out:"2.out"},
+	{ template:"inline.fts", input:{}, out:"inline.out"},
+	{ template:"3.fts", input:{}, out:"3.out"},
+	{ template:"nested.fts", input:{ name: 4 }, out:"nested.out"},
+	{ template:"tabbing.fts", input:{ name: 4 }, out:"tabbing.out"},
+	{ template:"block.fts", input:{ pid:33 }, blocks: { header:"\nFOOFOO\n//"}, out:"block.out" },
+	{ template:"block_modified.fts", input:{ pid:44 }, out:"block_modified.out", delete:false},
+	{ template:"c.fts", input:{ pid:33 }, blocks: { header:"\nFOOFOO\n//",prefix:"\nconst char *prefix=\"<\";\n" }, out:"c.out" },
+	{ template:"sql.fts",input:{}, out:"sql.out"}	
+];
 
 describe("Fire",function(){
 
 	describe("templates",function(){
-		it("should generate expected outputs",function(done){
-			var tests=[
-				{ template:"1.fts", input:{}, out:"1.out"},
-				{ template:"2.fts", input:{}, out:"2.out"},
-				{ template:"inline.fts", input:{}, out:"inline.out"},
-				{ template:"3.fts", input:{}, out:"3.out"},
-				{ template:"nested.fts", input:{ name: 4 }, out:"nested.out"},
-				{ template:"tabbing.fts", input:{ name: 4 }, out:"tabbing.out"},
-				{ template:"block.fts", input:{ pid:33 }, blocks: { header:"\nFOOFOO\n//"}, out:"block.out" },
-				{ template:"block_modified.fts", input:{ pid:44 }, out:"block_modified.out", delete:false},
-				{ template:"c.fts", input:{ pid:33 }, blocks: { header:"\nFOOFOO\n//",prefix:"\nconst char *prefix=\"<\";\n" }, out:"c.out" },
-				{ template:"sql.fts",input:{}, out:"sql.out"}	
-			];
-
-			runTest=function(input,onComplete){
+		tests.map(function(input){
+			it("should parse "+input.template+" and generate an output matching "+input.out,function(done){
 				opts.blocks=input.blocks;
 				Fire.generateSync(input.template,input.template+".gen",input.input,opts);	
 				fs.readFile(input.template+".gen",function(err,genData){
@@ -39,16 +38,10 @@ describe("Fire",function(){
 						outData=outData.toString();
 						if(genData==outData && input.delete!==false)
 							fs.unlink(input.template+".gen");
-						return onComplete(null,{ template: input.template, pass:(genData==outData)});
+						assert.equal(genData,outData);
+						done();
 					});
 				});
-			}
-
-			async.map(tests,runTest,function(err,results){
-				results.map(function(res){
-					assert.equal(res.pass,true,res.template);
-				});
-				done();
 			});
 		});
 	});
@@ -87,6 +80,21 @@ describe("Fire",function(){
 				}},function(err,res){
 				done();
 			});
+		});
+	});
+
+	describe("snippet based templets",function(){
+		it("Should allow template snippets to be utilized",function(done){
+			var t = Fire.parseSync("snippet.js.fts");
+
+			var res = t({},{ render: function(template,input,opts){
+				return Fire.compile("<%=xi%>")(input)	
+			}});
+
+			assert.equal("01234",res);
+			
+			done();
+
 		});
 	});
 

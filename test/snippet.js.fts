@@ -1,0 +1,1 @@
+<% for(var xi=0;xi<5;xi++){ %><%@ snippet (xi) %><% } %>

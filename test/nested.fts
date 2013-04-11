@@ -1,7 +1,7 @@
 Hello <%=name%>
 
-<%-../test/nested_child.fts%>
+<%@../test/nested_child.fts%>
 
 <% for(var xi=0; xi<10;xi++){ %>
-	<%- ../test/nested_loop.fts (xi) %>
+	<%@ ../test/nested_loop.fts (xi) %>
 <% } %>

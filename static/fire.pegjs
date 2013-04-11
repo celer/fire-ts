@@ -37,6 +37,7 @@ lineComment
 
 startComment
 	= '<!--'
+	/ '/**'
 	/ '/*'
 
 endComment
@@ -47,7 +48,7 @@ texpr
 	= '='
 	/ '%'
 	/ '?'
-	/ '-'	
+	/ '@'	
 	/ '#'
 
 	
@@ -69,13 +70,13 @@ jse
 																}
 
 expr
-	= sc:(lineComment spc) '%{' block:([A-Za-z0-9]+) '}' code:block+ '}%'{
+	= sc:(lineComment spc) '%{' block:([A-Za-z0-9\.\_]+) '}' code:block+ '}%'? {
 																																						sc=sc.join("");
 																																						block=block.join("");
 																																						code=code.join("");
 																																						return { string:code, block: block, sc: sc, ec:"",line:line };
 																																					}
-	/ sc:(startComment spc) '%{' block:([A-Za-z0-9]+) '}' code:block+ '}%'  ec:(endComment spc) {
+	/ sc:(startComment spc) '%{' block:([A-Za-z0-9\.\_]+) '}' code:block+ '}%' ec:(spc endComment spc) {
 																																						sc=sc.join("");
 																																						ec=ec.join("");
 																																						block=block.join("");

@@ -9,14 +9,16 @@ optimist=optimist
 	.describe("compile","The template to compile")
 	.describe("input","The input to use to run the template (as JSON)")
 	.describe("blocks","The blocks to use (as a JSON hash)")
+	.describe("readblocks","Read the blocks from the specified file (returned as JSON)")
 	.describe("compare","Compare the output file to the specified file")
 	.describe("uglify","Uglify the compiled template")
+	.describe("readcomments","Pull out the comments from a file")
 	.describe("debug","Debug")
-
+	
 
 var argv = optimist.argv;
 
-if(!argv.template && !argv.compile){
+if(!argv.template && !argv.compile && !argv.readblocks && !argv.readcomments){
 	optimist.showHelp();
 	process.exit(-2);
 }
@@ -55,7 +57,7 @@ if(argv.output && argv.template){
 		}
 	}
 
-} else {
+} else if(argv.compile){
 	if(argv.template){
 		var templ = Fire.parseSync(argv.template,{ debug: argv.debug, uglify:argv.uglify});
 		outputData=templ(input,opts);
@@ -75,6 +77,12 @@ if(argv.output && argv.template){
 		var res = Fire.parseSync(argv.compile,{ source: true, debug: argv.debug, uglify:uglify});
 		console.log(res);
 	}
+} else if(argv.readblocks){
+	var blocks = Fire.readFileBlocksSync(argv.readblocks);
+	console.log(JSON.stringify(blocks));
+} else if(argv.readcomments){
+	var comments = Fire.readCommentsSync(argv.readcomments);
+	console.log(JSON.stringify(comments));
 }
 
 process.exit(0);
