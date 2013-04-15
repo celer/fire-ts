@@ -1,6 +1,6 @@
 {
   "name": "fire-ts",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A template engine for generating code (c,c++,js,java,html,ruby,etc)",
   "main": "index.js",
   "bin": {
