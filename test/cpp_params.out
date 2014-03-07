@@ -1,0 +1,13 @@
+arga = getArgument<int>(args[a]);
+argb = getArgument<float>(args[b]);
+arga = getArgument<int>(args[a]);
+argb = getArgument<float>(args[b]);
+arga = getArgument<>(args[a]);
+argb = getArgument<>(args[b]);
+
+	arga = getArgument<int>(args[a]);
+	argb = getArgument<float>(args[b]);
+	arga = getArgument<int>(args[a]);
+	argb = getArgument<float>(args[b]);
+	arga = getArgument<>(args[a]);
+	argb = getArgument<>(args[b]);

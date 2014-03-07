@@ -1,0 +1,19 @@
+<%for(var i in params){%>
+arg<%=i%> = getArgument<<%=params[i].type%>>(args[<%=i%>]);
+<%}%>
+<%for(var i in params){%>
+arg<%=i%> = getArgument<<%=params[i].type%>>(args[<%=i%>]);
+<%}%>
+<%params2.map(function(i){%>
+arg<%=i%> = getArgument<>(args[<%=i%>]);
+<%});%>
+
+<%for(var i in params){%>
+    arg<%=i%> = getArgument<<%=params[i].type%>>(args[<%=i%>]);
+<%}%>
+<%for(var i in params){%>
+    arg<%=i%> = getArgument<<%=params[i].type%>>(args[<%=i%>]);
+<%}%>
+<%params2.map(function(i){%>
+    arg<%=i%> = getArgument<>(args[<%=i%>]);
+<%});%>

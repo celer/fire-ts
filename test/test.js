@@ -17,12 +17,14 @@ var tests=[
 	{ template:"2.fts", input:{}, out:"2.out"},
 	{ template:"inline.fts", input:{}, out:"inline.out"},
 	{ template:"3.fts", input:{}, out:"3.out"},
+	{ template:"cpp_params.fts", input:{ params: { a:{type:"int"}, b:{type:"float"} }, params2:["a","b"] }, out:"cpp_params.out"},
+	{ template:"cpp_params_sp.fts", input:{ params: { a:{type:"int"}, b:{type:"float"} }, params2:["a","b"] }, out:"cpp_params_sp.out", indent:"  "},
 	{ template:"nested.fts", input:{ name: 4 }, out:"nested.out"},
 	{ template:"tabbing.fts", input:{ name: 4 }, out:"tabbing.out"},
 	{ template:"block.fts", input:{ pid:33 }, blocks: { header:"\nFOOFOO\n//"}, out:"block.out" },
 	{ template:"block_modified.fts", input:{ pid:44 }, out:"block_modified.out", delete:false},
-	{ template:"c.fts", input:{ pid:33 }, blocks: { header:"\nFOOFOO\n//",prefix:"\nconst char *prefix=\"<\";\n" }, out:"c.out" },
-	{ template:"sql.fts",input:{}, out:"sql.out"}	
+	{ template:"sql.fts",input:{}, out:"sql.out"},
+	{ template:"c.fts", input:{ pid:33 }, blocks: { header:"\nFOOFOO\n//",prefix:"\nconst char *prefix=\"<\";\n" }, out:"c.out" }
 ];
 
 describe("Fire",function(){
@@ -31,6 +33,7 @@ describe("Fire",function(){
 		tests.map(function(input){
 			it("should parse "+input.template+" and generate an output matching "+input.out,function(done){
 				opts.blocks=input.blocks;
+        opts.indent=input.indent; 
 				Fire.generateSync(input.template,input.template+".gen",input.input,opts);	
 				fs.readFile(input.template+".gen",function(err,genData){
 					fs.readFile(input.out,function(err,outData){
@@ -98,6 +101,32 @@ describe("Fire",function(){
 		});
 	});
 
+  describe("Error handling",function(){
+    it("Should report line numbers when there are syntax errors in the template",function(done){
+      try {
+        var t = Fire.parseSync("tplerror.fts");
+      } catch(e){
+        assert.equal(e.line,4);
+        assert.equal(e.column,1);
+        assert.equal(/\(line:4:1\)/.test(e.message),true)
+      }
+      done();
+    });
+  });
+    
+  describe("Eval Error handling",function(){
+    it("Should report line numbers when there are errors in the template",function(done){
+      var t = Fire.parseSync("evalerror.fts");
+      try { 
+        t({});
+      } catch(e){
+        assert.equal(e.line,5);
+        assert.equal(/\(line:5\)/.test(e.message),true);
+      }
+      done();
+    });
+  });
+  
 });
 
 

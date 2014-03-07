@@ -5,3 +5,5 @@ Hello <%=name%>
 <% for(var xi=0; xi<10;xi++){ %>
 	<%@ ../test/nested_loop.fts (xi) %>
 <% } %>
+<% var myfunc=function(a) { return a*a; } %>
+<%@../test/nested_func.fts (myfunc) %>

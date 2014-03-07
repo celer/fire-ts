@@ -7,8 +7,8 @@ Build Status: [![Build Status](https://travis-ci.org/celer/fire-ts.png)](https:/
 
 Fire TS is a template engine for generating code. 
 
- * Designed to generate C, C++, Java, JavaScript, Ruby, Perl, HTML
- * Tries to generate well formatted code
+ * Designed to generate C, C++, Java, JavaScript, Ruby, Perl, and HTML
+ * Tries to generate well formatted code, you can properly indent your templates and fire-ts will remove your extra indention
  * Can update existing generated files with out overwriting everything
  * Designed to be compatible with the combustion template system  
 
@@ -106,6 +106,37 @@ void main(){
 
 ```
 # Writing templates!
+
+## Well formated templates! 
+
+One of the neat things that Fire TS does is it tries to allow you to both have well formated templates and well formatted output. 
+This means that Fire-TS will count the number of opening and closing braces and then remove the appropriates spacing. By default Fire-TS
+will look for tabs, although you can set the 'indent' property in the options to change it to spaces, etc. 
+
+Here are some examples:
+
+```c
+<% for(var i in items){ %> //tabDepth++
+	// This will automatically remove 1 tab from the generated output since we're one set of of braces deep
+	int <%= items[i].name %>;
+<% } %> //tabDepth--;
+// Would generate
+int foo;
+```
+
+```c
+<% for(var i in items){ %>  
+		// This will automatically remove 1 tab from the generated output since we're one set of of braces deep,
+		int <%= items[i].name %>;
+<% } %>
+//Would generate
+	int foo;
+```
+
+```javascript
+	//Tell Fire-TS to remove two spaces for each level of indention found
+	Fire.parseSync("input.fts",{ indent:"  " });
+``
 
 ## Evaluating code
 
@@ -275,18 +306,17 @@ function template(_$_i,_$_o,_$_oc){_$_o=_$_o||{},_$_o.b=_$_o.blocks||{};var _$_s
 
 ## License
 
+  MIT
+
 # API
 
 
 ```js
 /**
-
 	Fire Template System
 
 	@module FireTS
 	@class Fire
-
-
 */
 
 
