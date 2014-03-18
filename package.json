@@ -1,6 +1,6 @@
 {
   "name": "fire-ts",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A template engine for generating code (c,c++,js,java,html,ruby,etc)",
   "repository":"https://github.com/celer/fire-ts",
   "main": "index.js",
